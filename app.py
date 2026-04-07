@@ -7,8 +7,6 @@ from sklearn.cluster import KMeans
 # 1. Title
 st.title("Advanced Customer Segmentation")
 
-# 2. File Uploader
-uploaded_file = st.file_uploader("Upload your Mall Customers CSV", type=["csv"])
 
 # 3. Navigation (Appears only after title/upload)
 page = st.radio("Select View:", ["1. Dataset Overview", "2. Visual Analysis"], horizontal=True)
