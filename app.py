@@ -1,17 +1,20 @@
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.cluster import KMeans
 
-# 1. Title
-st.title("Advanced Customer Segmentation")
+# 1. Page Configuration
+st.set_page_config(page_title="Customer Segmentation Dashboard", layout="wide")
+st.title("🛍️ Advanced Customer Segmentation")
 
+# 2. Sidebar Navigation
+st.sidebar.header("Navigation")
+page = st.sidebar.radio("Go to:", ["1. Dataset Overview", "2. Visual Analysis (EDA)", "3. K-Means Clustering", "4. Marketing Insights"])
 
-# 3. Navigation (Appears only after title/upload)
-page = st.radio("Select View:", ["1. Dataset Overview", "2. Visual Analysis"], horizontal=True)
+uploaded_file = st.sidebar.file_uploader("Upload Mall_Customers.csv", type="csv")
 
-uploaded_file = st.file_uploader("Upload your CSV", type=["csv"])
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     X = df[['Annual Income (k$)', 'Spending Score (1-100)']]
