@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -9,19 +8,26 @@ from sklearn.cluster import KMeans
 st.set_page_config(page_title="Customer Segmentation Dashboard", layout="wide")
 st.title("🛍️ Advanced Customer Segmentation")
 
-# 2. Sidebar Navigation
-st.sidebar.header("Navigation")
-page = st.sidebar.radio("Go to:", ["1. Dataset Overview", "2. Visual Analysis (EDA)", "3. K-Means Clustering", "4. Marketing Insights"])
-
-uploaded_file = st.sidebar.file_uploader("Upload Mall_Customers.csv", type="csv")
+# 2. File Uploader (Main Page - Top)
+uploaded_file = st.file_uploader("Upload Mall_Customers.csv", type="csv")
 
 if uploaded_file is not None:
+    # 3. Navigation Menu (Appears only after upload)
+    # Using horizontal=True makes it look like a professional menu bar
+    st.markdown("---")
+    page = st.radio(
+        "Select Analysis Step:", 
+        ["1. Dataset Overview", "2. Visual Analysis (EDA)", "3. K-Means Clustering", "4. Marketing Insights"],
+        horizontal=True
+    )
+    st.markdown("---")
+
     df = pd.read_csv(uploaded_file)
     X = df[['Annual Income (k$)', 'Spending Score (1-100)']]
 
     # PAGE 1: Dataset Overview
     if page == "1. Dataset Overview":
-        st.subheader("Data Summary")
+        st.subheader("📊 Data Summary")
         col1, col2, col3 = st.columns(3)
         col1.metric("Total Customers", len(df))
         col2.metric("Avg. Income", f"${df['Annual Income (k$)'].mean():.2f}k")
@@ -34,7 +40,7 @@ if uploaded_file is not None:
 
     # PAGE 2: Exploratory Analysis
     elif page == "2. Visual Analysis (EDA)":
-        st.subheader("Distribution Analysis")
+        st.subheader("📈 Distribution Analysis")
         col1, col2 = st.columns(2)
         
         with col1:
@@ -51,7 +57,7 @@ if uploaded_file is not None:
 
     # PAGE 3: K-Means Clustering
     elif page == "3. K-Means Clustering":
-        st.subheader("Machine Learning Logic")
+        st.subheader("🤖 Machine Learning Logic")
         
         # 3a. Elbow Method
         st.write("#### 1. Finding Optimal Clusters (Elbow Method)")
@@ -70,7 +76,7 @@ if uploaded_file is not None:
         
         # 3b. Apply K-Means based on user input
         st.write("#### 2. Apply Segmentation")
-        k = st.slider("Select K Clusters", 2, 10, 5)
+        k = st.slider("Select K Clusters (Choose based on the Elbow above)", 2, 10, 5)
         kmeans = KMeans(n_clusters=k, init='k-means++', random_state=42)
         df['Cluster'] = kmeans.fit_predict(X)
         
@@ -97,7 +103,7 @@ if uploaded_file is not None:
 
     # PAGE 4: Marketing Insights
     elif page == "4. Marketing Insights":
-        st.subheader("Target Groups Discovery")
+        st.subheader("🎯 Target Groups Discovery")
         
         # High Spend/Low Income customers
         priority = df[(df['Spending Score (1-100)'] > 70) & (df['Annual Income (k$)'] < 40)]
@@ -109,4 +115,4 @@ if uploaded_file is not None:
         st.download_button("Download Segmented Data", data=csv, file_name="segmented_customers.csv", mime="text/csv")
 
 else:
-    st.info("Please upload the Mall_Customers.csv file from the sidebar to begin.")
+    st.info("👋 Welcome! Please upload the Mall_Customers.csv file above to begin the analysis.")
