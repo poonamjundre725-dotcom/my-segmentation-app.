@@ -12,8 +12,7 @@ st.title("🛍️ Advanced Customer Segmentation")
 st.sidebar.header("Navigation")
 page = st.sidebar.radio("Go to:", ["1. Dataset Overview", "2. Visual Analysis (EDA)", "3. K-Means Clustering", "4. Marketing Insights"])
 
-uploaded_file = st.sidebar.file_uploader("Upload Mall_Customers.csv", type="csv")
-
+uploaded_file = st.file_uploader("Upload your CSV", type=["csv"])
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     X = df[['Annual Income (k$)', 'Spending Score (1-100)']]
